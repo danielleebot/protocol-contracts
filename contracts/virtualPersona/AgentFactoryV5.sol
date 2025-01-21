@@ -393,89 +393,88 @@ contract AgentFactoryV5 is
         return agentToken;
     }
 
+    // // Bootstrap Agent with existing ERC20 tokens
+    // function initFromToken(
+    //     address tokenAddr,
+    //     uint8[] memory cores,
+    //     bytes32 tbaSalt,
+    //     address tbaImplementation,
+    //     uint32 daoVotingPeriod,
+    //     uint256 daoThreshold,
+    //     uint256 initialLP
+    // ) public whenNotPaused returns (uint256) {
+    //     address sender = _msgSender();
+    //     require(_tokenApplication[tokenAddr] == 0, "Token already exists");
 
-    // Bootstrap Agent with existing ERC20 tokens
-    function initFromToken(
-        address tokenAddr,
-        uint8[] memory cores,
-        bytes32 tbaSalt,
-        address tbaImplementation,
-        uint32 daoVotingPeriod,
-        uint256 daoThreshold,
-        uint256 initialLP
-    ) public whenNotPaused returns (uint256) {
-        address sender = _msgSender();
-        require(_tokenApplication[tokenAddr] == 0, "Token already exists");
+    //     require(isCompatibleToken(tokenAddr), "Unsupported token");
 
-        require(isCompatibleToken(tokenAddr), "Unsupported token");
+    //     require(
+    //         IERC20(assetToken).balanceOf(sender) >= applicationThreshold,
+    //         "Insufficient asset token"
+    //     );
 
-        require(
-            IERC20(assetToken).balanceOf(sender) >= applicationThreshold,
-            "Insufficient asset token"
-        );
+    //     require(
+    //         IERC20(assetToken).allowance(sender, address(this)) >=
+    //             applicationThreshold,
+    //         "Insufficient asset token allowance"
+    //     );
 
-        require(
-            IERC20(assetToken).allowance(sender, address(this)) >=
-                applicationThreshold,
-            "Insufficient asset token allowance"
-        );
+    //     require(cores.length > 0, "Cores must be provided");
 
-        require(cores.length > 0, "Cores must be provided");
+    //     require(initialLP > 0, "InitialLP must be greater than 0");
 
-        require(initialLP > 0, "InitialLP must be greater than 0");
+    //     IERC20(tokenAddr).safeTransferFrom(sender, address(this), initialLP);
 
-        IERC20(tokenAddr).safeTransferFrom(sender, address(this), initialLP);
+    //     IERC20(assetToken).safeTransferFrom(
+    //         sender,
+    //         address(this),
+    //         applicationThreshold
+    //     );
 
-        IERC20(assetToken).safeTransferFrom(
-            sender,
-            address(this),
-            applicationThreshold
-        );
+    //     uint256 id = _nextId++;
+    //     _tokenApplication[tokenAddr] = id;
+    //     _applicationToken[id] = tokenAddr;
 
-        uint256 id = _nextId++;
-        _tokenApplication[tokenAddr] = id;
-        _applicationToken[id] = tokenAddr;
+    //     Application memory application = Application(
+    //         IAgentToken(tokenAddr).name(),
+    //         IAgentToken(tokenAddr).symbol(),
+    //         "",
+    //         ApplicationStatus.Active,
+    //         applicationThreshold,
+    //         sender,
+    //         cores
+    //     );
+    //     _applications[id] = application;
+    //     emit NewApplication(id);
 
-        Application memory application = Application(
-            IAgentToken(tokenAddr).name(),
-            IAgentToken(tokenAddr).symbol(),
-            "",
-            ApplicationStatus.Active,
-            applicationThreshold,
-            sender,
-            cores
-        );
-        _applications[id] = application;
-        emit NewApplication(id);
-
-        return id;
-    }
+    //     return id;
+    // }
 
 
-    function executeTokenApplication(
-        uint256 id,
-        bool canStake
-    ) public noReentrant {
-        // This will bootstrap an Agent with following components:
-        // C2: LP Pool + Initial liquidity
-        // C3: Agent veToken
-        // C7: Stake liquidity token to get veToken
+    // function executeTokenApplication(
+    //     uint256 id,
+    //     bool canStake
+    // ) public noReentrant {
+    //     // This will bootstrap an Agent with following components:
+    //     // C2: LP Pool + Initial liquidity
+    //     // C3: Agent veToken
+    //     // C7: Stake liquidity token to get veToken
 
-        Application storage application = _applications[id];
+    //     Application storage application = _applications[id];
 
-        require(
-            msg.sender == application.proposer ||
-                hasRole(WITHDRAW_ROLE, msg.sender),
-            "Not proposer"
-        );
+    //     require(
+    //         msg.sender == application.proposer ||
+    //             hasRole(WITHDRAW_ROLE, msg.sender),
+    //         "Not proposer"
+    //     );
 
-        require(
-            _applicationToken[id] != address(0),
-            "Not custom token application"
-        );
+    //     require(
+    //         _applicationToken[id] != address(0),
+    //         "Not custom token application"
+    //     );
 
-        _executeApplication(id, canStake, _tokenSupplyParams);
-    }
+    //     _executeApplication(id, canStake, _tokenSupplyParams);
+    // }
 
     function setDefaultDelegatee(
         address newDelegatee
@@ -483,27 +482,27 @@ contract AgentFactoryV5 is
         defaultDelegatee = newDelegatee;
     }
 
-    function isCompatibleToken(address tokenAddr) public view returns (bool) {
-        try IAgentToken(tokenAddr).name() returns (string memory) {
-            try IAgentToken(tokenAddr).symbol() returns (string memory) {
-                try IAgentToken(tokenAddr).totalSupply() returns (uint256) {
-                    try
-                        IAgentToken(tokenAddr).balanceOf(address(this))
-                    returns (uint256) {
-                        return true;
-                    } catch {
-                        return false;
-                    }
-                } catch {
-                    return false;
-                }
-            } catch {
-                return false;
-            }
-        } catch {
-            return false;
-        }
-    }
+    // function isCompatibleToken(address tokenAddr) public view returns (bool) {
+    //     try IAgentToken(tokenAddr).name() returns (string memory) {
+    //         try IAgentToken(tokenAddr).symbol() returns (string memory) {
+    //             try IAgentToken(tokenAddr).totalSupply() returns (uint256) {
+    //                 try
+    //                     IAgentToken(tokenAddr).balanceOf(address(this))
+    //                 returns (uint256) {
+    //                     return true;
+    //                 } catch {
+    //                     return false;
+    //                 }
+    //             } catch {
+    //                 return false;
+    //             }
+    //         } catch {
+    //             return false;
+    //         }
+    //     } catch {
+    //         return false;
+    //     }
+    // }
 
     function _createPair(
         address tokenAddr

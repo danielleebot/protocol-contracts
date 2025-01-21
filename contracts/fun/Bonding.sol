@@ -13,7 +13,7 @@ import "./FFactory.sol";
 import "./IFPair.sol";
 import "./FRouter.sol";
 import "./FERC20.sol";
-import "../virtualPersona/IAgentFactoryV3.sol";
+import "../virtualPersona/IAgentFactoryV5.sol";
 
 contract Bonding is
     Initializable,
@@ -422,7 +422,7 @@ contract Bonding is
         router.graduate(tokenAddress);
 
         IERC20(router.assetToken()).forceApprove(agentFactory, assetBalance);
-        uint256 id = IAgentFactoryV3(agentFactory).initFromBondingCurve(
+        uint256 id = IAgentFactoryV5(agentFactory).initFromBondingCurve(
             string.concat(_token.data._name, " by Virtuals"),
             _token.data.ticker,
             _token.cores,
@@ -434,7 +434,7 @@ contract Bonding is
             _token.creator
         );
 
-        address agentToken = IAgentFactoryV3(agentFactory)
+        address agentToken = IAgentFactoryV5(agentFactory)
             .executeBondingCurveApplication(
                 id,
                 _token.data.supply / (10 ** token_.decimals()),
