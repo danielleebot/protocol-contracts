@@ -2,13 +2,13 @@
 
 FERC20 Token buy/sell tax
 
-- BUY_TAX: 0,
-- SELL_TAX: 0,
+- BUY_TAX: 1,
+- SELL_TAX: 1,
 
 ## Bonding
 
-- FERC20 Token Name: "fun [name]"
-- AgentToken Name: "[name] by Virtuals"
+- FERC20 Token Name: "discover [name]"
+- AgentToken Name: "[name] by Sidekick"
 
 - LAUNCH_FEE: 100000, // 100 VirtualToken
 - INITIAL_SUPPLY: "1000000000", // 1 billion FERC20 Token
@@ -18,7 +18,7 @@ FERC20 Token buy/sell tax
 
 ## AgentFactoryV5
 
-- APPLICATION_THRESHOLD: parseEther("125000"), // : 125k
+<!-- - APPLICATION_THRESHOLD: parseEther("125000"), // : 125k -->
 
 ### setTokenSupplyParams
 
@@ -36,7 +36,7 @@ AgentToken buy/sell tax
 
 - PROJECT_BUY_TAX_BASIS_POINTS: 100, // buy tax: 1%
 - PROJECT_SELL_TAX_BASIS_POINTS: 100, // sell tax: 1%
-- TAX_SWAP_THRESHOLD_BASIS_POINTS: 1, // swap tax: 0.01%
+- TAX_SWAP_THRESHOLD_BASIS_POINTS: 1, // (\_totalSupply \* swapThresholdBasisPoints) / BP_DENOM;
 
 ### setMaturityDuration
 

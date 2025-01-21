@@ -211,7 +211,7 @@ contract Bonding is
             initialPurchase
         );
 
-        FERC20 token = new FERC20(string.concat("fun ", _name), _ticker, initialSupply, maxTx);
+        FERC20 token = new FERC20(string.concat("discover ", _name), _ticker, initialSupply, maxTx);
         uint256 supply = token.totalSupply();
 
         address _pair = factory.createPair(address(token), assetToken);
@@ -226,7 +226,7 @@ contract Bonding is
 
         Data memory _data = Data({
             token: address(token),
-            name: string.concat("fun ", _name),
+            name: string.concat("discover ", _name),
             _name: _name,
             ticker: _ticker,
             supply: supply,
@@ -423,7 +423,7 @@ contract Bonding is
 
         IERC20(router.assetToken()).forceApprove(agentFactory, assetBalance);
         uint256 id = IAgentFactoryV5(agentFactory).initFromBondingCurve(
-            string.concat(_token.data._name, " by Virtuals"),
+            string.concat(_token.data._name, " by Sidekick"),
             _token.data.ticker,
             _token.cores,
             _deployParams.tbaSalt,

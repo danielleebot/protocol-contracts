@@ -21,8 +21,8 @@ const addressConfig = {
 
 const baseConfig = {
   // FFactory: FERC20 Token buy/sell tax
-  BUY_TAX: 0,
-  SELL_TAX: 0,
+  BUY_TAX: 1,
+  SELL_TAX: 1,
 
   // Bonding
   LAUNCH_FEE: 100000, // 100 VirtualToken
