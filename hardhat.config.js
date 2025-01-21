@@ -90,4 +90,9 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
     },
   },
+  dependencyCompiler: {
+    paths: [
+      "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+    ],
+  },
 };

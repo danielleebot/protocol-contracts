@@ -21,7 +21,10 @@ contract AgentVeToken is IAgentVeToken, ERC20Upgradeable, ERC20Votes {
     bool public canStake; // To control private/public agent mode
     uint256 public initialLock; // Initial locked amount
 
+    address owner;
+
     constructor() {
+        owner = msg.sender;
         _disableInitializers();
     }
 
@@ -73,16 +76,18 @@ contract AgentVeToken is IAgentVeToken, ERC20Upgradeable, ERC20Votes {
             "Insufficient asset token allowance"
         );
 
-        IAgentNft registry = IAgentNft(agentNft);
-        uint256 virtualId = registry.stakingTokenToVirtualId(address(this));
+        if (agentNft != address(0)) {
+            IAgentNft registry = IAgentNft(agentNft);
+            uint256 virtualId = registry.stakingTokenToVirtualId(address(this));
 
-        require(!registry.isBlacklisted(virtualId), "Agent Blacklisted");
+            require(!registry.isBlacklisted(virtualId), "Agent Blacklisted");
+            
+            registry.addValidator(virtualId, delegatee);
+        }
 
         if (totalSupply() == 0) {
             initialLock = amount;
         }
-        
-        registry.addValidator(virtualId, delegatee);
 
         IERC20(assetToken).safeTransferFrom(sender, address(this), amount);
         _mint(receiver, amount);
@@ -99,11 +104,15 @@ contract AgentVeToken is IAgentVeToken, ERC20Upgradeable, ERC20Votes {
     }
 
     function setMatureAt(uint256 _matureAt) public {
-        bytes32 ADMIN_ROLE = keccak256("ADMIN_ROLE");
-        require(
-            IAccessControl(agentNft).hasRole(ADMIN_ROLE, _msgSender()),
-            "Not admin"
-        );
+        if (agentNft == address(0)) {
+            require(owner == msg.sender, "Not owner");
+        } else {
+            bytes32 ADMIN_ROLE = keccak256("ADMIN_ROLE");
+            require(
+                IAccessControl(agentNft).hasRole(ADMIN_ROLE, _msgSender()),
+                "Not admin"
+            );
+        }
         matureAt = _matureAt;
     }
 
